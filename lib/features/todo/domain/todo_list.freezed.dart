@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'todo.dart';
+part of 'todo_list.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,33 +14,33 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TodoDomain _$TodoDomainFromJson(Map<String, dynamic> json) {
+TodoListDomain _$TodoListDomainFromJson(Map<String, dynamic> json) {
   return _Person.fromJson(json);
 }
 
 /// @nodoc
-mixin _$TodoDomain {
-  String get title => throw _privateConstructorUsedError;
+mixin _$TodoListDomain {
+  List<TodoDomain> get list => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TodoDomainCopyWith<TodoDomain> get copyWith =>
+  $TodoListDomainCopyWith<TodoListDomain> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TodoDomainCopyWith<$Res> {
-  factory $TodoDomainCopyWith(
-          TodoDomain value, $Res Function(TodoDomain) then) =
-      _$TodoDomainCopyWithImpl<$Res, TodoDomain>;
+abstract class $TodoListDomainCopyWith<$Res> {
+  factory $TodoListDomainCopyWith(
+          TodoListDomain value, $Res Function(TodoListDomain) then) =
+      _$TodoListDomainCopyWithImpl<$Res, TodoListDomain>;
   @useResult
-  $Res call({String title});
+  $Res call({List<TodoDomain> list});
 }
 
 /// @nodoc
-class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
-    implements $TodoDomainCopyWith<$Res> {
-  _$TodoDomainCopyWithImpl(this._value, this._then);
+class _$TodoListDomainCopyWithImpl<$Res, $Val extends TodoListDomain>
+    implements $TodoListDomainCopyWith<$Res> {
+  _$TodoListDomainCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -50,31 +50,31 @@ class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? list = null,
   }) {
     return _then(_value.copyWith(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      list: null == list
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
+              as List<TodoDomain>,
     ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$PersonImplCopyWith<$Res>
-    implements $TodoDomainCopyWith<$Res> {
+    implements $TodoListDomainCopyWith<$Res> {
   factory _$$PersonImplCopyWith(
           _$PersonImpl value, $Res Function(_$PersonImpl) then) =
       __$$PersonImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({List<TodoDomain> list});
 }
 
 /// @nodoc
 class __$$PersonImplCopyWithImpl<$Res>
-    extends _$TodoDomainCopyWithImpl<$Res, _$PersonImpl>
+    extends _$TodoListDomainCopyWithImpl<$Res, _$PersonImpl>
     implements _$$PersonImplCopyWith<$Res> {
   __$$PersonImplCopyWithImpl(
       _$PersonImpl _value, $Res Function(_$PersonImpl) _then)
@@ -83,13 +83,13 @@ class __$$PersonImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? list = null,
   }) {
     return _then(_$PersonImpl(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
-              as String,
+      list: null == list
+          ? _value._list
+          : list // ignore: cast_nullable_to_non_nullable
+              as List<TodoDomain>,
     ));
   }
 }
@@ -97,17 +97,22 @@ class __$$PersonImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PersonImpl implements _Person {
-  const _$PersonImpl({required this.title});
+  const _$PersonImpl({required final List<TodoDomain> list}) : _list = list;
 
   factory _$PersonImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonImplFromJson(json);
 
+  final List<TodoDomain> _list;
   @override
-  final String title;
+  List<TodoDomain> get list {
+    if (_list is EqualUnmodifiableListView) return _list;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_list);
+  }
 
   @override
   String toString() {
-    return 'TodoDomain(title: $title)';
+    return 'TodoListDomain(list: $list)';
   }
 
   @override
@@ -115,12 +120,13 @@ class _$PersonImpl implements _Person {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PersonImpl &&
-            (identical(other.title, title) || other.title == title));
+            const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
   @override
@@ -136,13 +142,13 @@ class _$PersonImpl implements _Person {
   }
 }
 
-abstract class _Person implements TodoDomain {
-  const factory _Person({required final String title}) = _$PersonImpl;
+abstract class _Person implements TodoListDomain {
+  const factory _Person({required final List<TodoDomain> list}) = _$PersonImpl;
 
   factory _Person.fromJson(Map<String, dynamic> json) = _$PersonImpl.fromJson;
 
   @override
-  String get title;
+  List<TodoDomain> get list;
   @override
   @JsonKey(ignore: true)
   _$$PersonImplCopyWith<_$PersonImpl> get copyWith =>

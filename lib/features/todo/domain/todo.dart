@@ -7,7 +7,7 @@ part 'todo.g.dart';
 class TodoDomain with _$TodoDomain {
   const factory TodoDomain({
     required String title,
-    required DateTime date,
+    // required DateTime date,
   }) = _Person;
 
   factory TodoDomain.fromJson(Map<String, dynamic> json) =>
