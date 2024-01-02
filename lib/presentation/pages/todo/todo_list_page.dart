@@ -21,6 +21,7 @@ class TodoListPage extends ConsumerWidget {
             itemBuilder: (context, index) {
               final todo = docs[index].data();
               return ListTile(
+                key: ValueKey(todo.id),
                 title: Text(todo.title),
               );
             },

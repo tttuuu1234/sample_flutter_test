@@ -15,11 +15,12 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 TodoDomain _$TodoDomainFromJson(Map<String, dynamic> json) {
-  return _Person.fromJson(json);
+  return _TodoDomain.fromJson(json);
 }
 
 /// @nodoc
 mixin _$TodoDomain {
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +35,7 @@ abstract class $TodoDomainCopyWith<$Res> {
           TodoDomain value, $Res Function(TodoDomain) then) =
       _$TodoDomainCopyWithImpl<$Res, TodoDomain>;
   @useResult
-  $Res call({String title});
+  $Res call({String id, String title});
 }
 
 /// @nodoc
@@ -50,9 +51,14 @@ class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -62,30 +68,35 @@ class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
 }
 
 /// @nodoc
-abstract class _$$PersonImplCopyWith<$Res>
+abstract class _$$TodoDomainImplCopyWith<$Res>
     implements $TodoDomainCopyWith<$Res> {
-  factory _$$PersonImplCopyWith(
-          _$PersonImpl value, $Res Function(_$PersonImpl) then) =
-      __$$PersonImplCopyWithImpl<$Res>;
+  factory _$$TodoDomainImplCopyWith(
+          _$TodoDomainImpl value, $Res Function(_$TodoDomainImpl) then) =
+      __$$TodoDomainImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({String id, String title});
 }
 
 /// @nodoc
-class __$$PersonImplCopyWithImpl<$Res>
-    extends _$TodoDomainCopyWithImpl<$Res, _$PersonImpl>
-    implements _$$PersonImplCopyWith<$Res> {
-  __$$PersonImplCopyWithImpl(
-      _$PersonImpl _value, $Res Function(_$PersonImpl) _then)
+class __$$TodoDomainImplCopyWithImpl<$Res>
+    extends _$TodoDomainCopyWithImpl<$Res, _$TodoDomainImpl>
+    implements _$$TodoDomainImplCopyWith<$Res> {
+  __$$TodoDomainImplCopyWithImpl(
+      _$TodoDomainImpl _value, $Res Function(_$TodoDomainImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
-    return _then(_$PersonImpl(
+    return _then(_$TodoDomainImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -96,55 +107,63 @@ class __$$PersonImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PersonImpl implements _Person {
-  const _$PersonImpl({required this.title});
+class _$TodoDomainImpl implements _TodoDomain {
+  const _$TodoDomainImpl({this.id = '', required this.title});
 
-  factory _$PersonImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PersonImplFromJson(json);
+  factory _$TodoDomainImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TodoDomainImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final String id;
   @override
   final String title;
 
   @override
   String toString() {
-    return 'TodoDomain(title: $title)';
+    return 'TodoDomain(id: $id, title: $title)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PersonImpl &&
+            other is _$TodoDomainImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode => Object.hash(runtimeType, id, title);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PersonImplCopyWith<_$PersonImpl> get copyWith =>
-      __$$PersonImplCopyWithImpl<_$PersonImpl>(this, _$identity);
+  _$$TodoDomainImplCopyWith<_$TodoDomainImpl> get copyWith =>
+      __$$TodoDomainImplCopyWithImpl<_$TodoDomainImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PersonImplToJson(
+    return _$$TodoDomainImplToJson(
       this,
     );
   }
 }
 
-abstract class _Person implements TodoDomain {
-  const factory _Person({required final String title}) = _$PersonImpl;
+abstract class _TodoDomain implements TodoDomain {
+  const factory _TodoDomain({final String id, required final String title}) =
+      _$TodoDomainImpl;
 
-  factory _Person.fromJson(Map<String, dynamic> json) = _$PersonImpl.fromJson;
+  factory _TodoDomain.fromJson(Map<String, dynamic> json) =
+      _$TodoDomainImpl.fromJson;
 
+  @override
+  String get id;
   @override
   String get title;
   @override
   @JsonKey(ignore: true)
-  _$$PersonImplCopyWith<_$PersonImpl> get copyWith =>
+  _$$TodoDomainImplCopyWith<_$TodoDomainImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -13,8 +13,8 @@ class TodoRepository {
     return FirebaseFirestore.instance
         .collection('todos')
         .withConverter<TodoDomain>(
-          fromFirestore: (snapshot, _) => TodoDomain.fromJson(snapshot.data()!),
-          toFirestore: (value, _) => value.toJson(),
+          fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
+          toFirestore: (value, _) => value.toDoc(),
         )
         .snapshots();
   }
