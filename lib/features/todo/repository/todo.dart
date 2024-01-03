@@ -18,4 +18,11 @@ class TodoRepository {
         )
         .snapshots();
   }
+
+  Future<void> add({required String title}) async {
+    await FirebaseFirestore.instance.collection('todos').add({
+      'title': title,
+      'date': DateTime.now(),
+    });
+  }
 }
