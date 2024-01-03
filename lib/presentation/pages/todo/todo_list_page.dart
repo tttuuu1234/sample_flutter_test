@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:sample_flutter_test/features/todo/application/todo_list.dart';
 
 /// Todo一覧画面
@@ -22,7 +23,14 @@ class TodoListPage extends ConsumerWidget {
               final todo = docs[index].data();
               return ListTile(
                 key: ValueKey(todo.id),
-                title: Text(todo.title),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(DateFormat('yyyy/MM/dd').format(todo.date)),
+                    Text(todo.title),
+                  ],
+                ),
+                onTap: () {},
               );
             },
           );
@@ -33,6 +41,10 @@ class TodoListPage extends ConsumerWidget {
         loading: () => const Center(
           child: CircularProgressIndicator.adaptive(),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }

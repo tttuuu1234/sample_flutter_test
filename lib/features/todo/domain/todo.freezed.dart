@@ -22,6 +22,8 @@ TodoDomain _$TodoDomainFromJson(Map<String, dynamic> json) {
 mixin _$TodoDomain {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime get date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,7 @@ abstract class $TodoDomainCopyWith<$Res> {
           TodoDomain value, $Res Function(TodoDomain) then) =
       _$TodoDomainCopyWithImpl<$Res, TodoDomain>;
   @useResult
-  $Res call({String id, String title});
+  $Res call({String id, String title, @TimestampConverter() DateTime date});
 }
 
 /// @nodoc
@@ -53,6 +55,7 @@ class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? date = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -63,6 +66,10 @@ class _$TodoDomainCopyWithImpl<$Res, $Val extends TodoDomain>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -75,7 +82,7 @@ abstract class _$$TodoDomainImplCopyWith<$Res>
       __$$TodoDomainImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String title});
+  $Res call({String id, String title, @TimestampConverter() DateTime date});
 }
 
 /// @nodoc
@@ -91,6 +98,7 @@ class __$$TodoDomainImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? title = null,
+    Object? date = null,
   }) {
     return _then(_$TodoDomainImpl(
       id: null == id
@@ -101,6 +109,10 @@ class __$$TodoDomainImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -108,7 +120,10 @@ class __$$TodoDomainImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TodoDomainImpl implements _TodoDomain {
-  const _$TodoDomainImpl({this.id = '', required this.title});
+  const _$TodoDomainImpl(
+      {this.id = '',
+      required this.title,
+      @TimestampConverter() required this.date});
 
   factory _$TodoDomainImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoDomainImplFromJson(json);
@@ -118,10 +133,13 @@ class _$TodoDomainImpl implements _TodoDomain {
   final String id;
   @override
   final String title;
+  @override
+  @TimestampConverter()
+  final DateTime date;
 
   @override
   String toString() {
-    return 'TodoDomain(id: $id, title: $title)';
+    return 'TodoDomain(id: $id, title: $title, date: $date)';
   }
 
   @override
@@ -130,12 +148,13 @@ class _$TodoDomainImpl implements _TodoDomain {
         (other.runtimeType == runtimeType &&
             other is _$TodoDomainImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.title, title) || other.title == title));
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title);
+  int get hashCode => Object.hash(runtimeType, id, title, date);
 
   @JsonKey(ignore: true)
   @override
@@ -152,8 +171,10 @@ class _$TodoDomainImpl implements _TodoDomain {
 }
 
 abstract class _TodoDomain implements TodoDomain {
-  const factory _TodoDomain({final String id, required final String title}) =
-      _$TodoDomainImpl;
+  const factory _TodoDomain(
+      {final String id,
+      required final String title,
+      @TimestampConverter() required final DateTime date}) = _$TodoDomainImpl;
 
   factory _TodoDomain.fromJson(Map<String, dynamic> json) =
       _$TodoDomainImpl.fromJson;
@@ -162,6 +183,9 @@ abstract class _TodoDomain implements TodoDomain {
   String get id;
   @override
   String get title;
+  @override
+  @TimestampConverter()
+  DateTime get date;
   @override
   @JsonKey(ignore: true)
   _$$TodoDomainImplCopyWith<_$TodoDomainImpl> get copyWith =>

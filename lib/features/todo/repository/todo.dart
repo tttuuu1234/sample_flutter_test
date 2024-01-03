@@ -14,7 +14,7 @@ class TodoRepository {
         .collection('todos')
         .withConverter<TodoDomain>(
           fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
-          toFirestore: (value, _) => value.toDoc(),
+          toFirestore: (value, _) => value.toJson()..remove('id'),
         )
         .snapshots();
   }
