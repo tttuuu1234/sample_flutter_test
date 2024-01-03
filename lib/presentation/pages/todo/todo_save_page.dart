@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sample_flutter_test/features/todo/application/todo_save.dart';
+import 'package:sample_flutter_test/features/todo/application/todo_application.dart';
 
 class TodoSavePage extends ConsumerStatefulWidget {
   const TodoSavePage({super.key});
@@ -35,8 +35,11 @@ class _TodoSavePageState extends ConsumerState<TodoSavePage> {
                 ? null
                 : () async {
                     await ref
-                        .read(todoSaveApplicationProvider)
+                        .read(todoApplicationProvider)
                         .add(context: context, title: titleController.text);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   },
             child: const Text('保存'),
           ),

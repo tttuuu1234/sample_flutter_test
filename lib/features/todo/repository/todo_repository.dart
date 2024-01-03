@@ -16,6 +16,7 @@ class TodoRepository {
           fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
           toFirestore: (value, _) => value.toJson()..remove('id'),
         )
+        .orderBy('date', descending: true)
         .snapshots();
   }
 
@@ -24,5 +25,9 @@ class TodoRepository {
       'title': title,
       'date': DateTime.now(),
     });
+  }
+
+  Future<void> delete(String id) async {
+    await FirebaseFirestore.instance.collection('todos').doc(id).delete();
   }
 }

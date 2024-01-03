@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:sample_flutter_test/features/todo/application/todo_list.dart';
+import 'package:sample_flutter_test/features/todo/application/todo_application.dart';
 import 'package:sample_flutter_test/presentation/pages/todo/todo_save_page.dart';
 
 /// Todo一覧画面
@@ -22,16 +24,26 @@ class TodoListPage extends ConsumerWidget {
             itemCount: docs.length,
             itemBuilder: (context, index) {
               final todo = docs[index].data();
-              return ListTile(
+              log(todo.title);
+              return Dismissible(
                 key: ValueKey(todo.id),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(DateFormat('yyyy/MM/dd').format(todo.date)),
-                    Text(todo.title),
-                  ],
+                background: Container(color: Colors.red),
+                onDismissed: (direction) async {
+                  await ref
+                      .read(todoApplicationProvider)
+                      .delete(context: context, id: todo.id);
+                },
+                child: ListTile(
+                  key: ValueKey(todo.id),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(DateFormat('yyyy/MM/dd HH:mm').format(todo.date)),
+                      Text(todo.title),
+                    ],
+                  ),
+                  onTap: () {},
                 ),
-                onTap: () {},
               );
             },
           );
