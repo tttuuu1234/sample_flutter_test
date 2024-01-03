@@ -19,34 +19,41 @@ class TodoListPage extends ConsumerWidget {
       ),
       body: todoList.when(
         data: (data) {
+          log('ListViewです');
           final docs = data.docs;
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              final todo = docs[index].data();
-              log(todo.title);
-              return Dismissible(
-                key: ValueKey(todo.id),
-                background: Container(color: Colors.red),
-                onDismissed: (direction) async {
-                  await ref
-                      .read(todoApplicationProvider)
-                      .delete(context: context, id: todo.id);
-                },
-                child: ListTile(
-                  key: ValueKey(todo.id),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(DateFormat('yyyy/MM/dd HH:mm').format(todo.date)),
-                      Text(todo.title),
-                    ],
-                  ),
-                  onTap: () {},
-                ),
-              );
-            },
-          );
+          return docs.isEmpty
+              ? const Center(child: Text('Todo is empty'))
+              : ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    final todo = docs[index].data();
+                    log(todo.title);
+                    print(todo.date);
+                    print(DateFormat('yyyy/MM/dd HH:mm').format(todo.date));
+                    return Dismissible(
+                      key: ValueKey(todo.id),
+                      background: Container(color: Colors.red),
+                      onDismissed: (direction) async {
+                        await ref
+                            .read(todoApplicationProvider)
+                            .delete(context: context, id: todo.id);
+                      },
+                      child: ListTile(
+                        key: ValueKey(todo.id),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              DateFormat('yyyy/MM/dd HH:mm').format(todo.date),
+                            ),
+                            Text(todo.title),
+                          ],
+                        ),
+                        onTap: () {},
+                      ),
+                    );
+                  },
+                );
         },
         error: (error, stackTrace) => Center(
           child: Text(error.toString()),
