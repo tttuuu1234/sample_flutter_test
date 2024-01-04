@@ -21,7 +21,9 @@ void main() {
       fakeFirestore = FakeFirebaseFirestore();
       app = ProviderScope(
         overrides: [
+          // Mock用のFirestoreに上書きしている。
           firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
+          // Mock用のTodo一覧取得StreamProviderに上書きしている。
           todoListStreamProvider.overrideWith((ref) {
             return fakeFirestore
                 .collection('todos')
@@ -35,6 +37,7 @@ void main() {
         ],
         child: const MyApp(),
       );
+      // Firestoreに擬似的にTodoの追加をしている。
       await fakeFirestore.collection('todos').doc('mock_id').set({
         'title': '掃除',
         'date': DateTime(2024, 1, 1, 18, 30),
