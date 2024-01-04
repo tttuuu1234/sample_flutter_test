@@ -13,13 +13,6 @@ import 'package:sample_flutter_test/main.dart';
 import 'package:sample_flutter_test/utils/provider.dart';
 
 void main() {
-  testWidgets('日付の昇順で表示されているか。', (widgetTester) async {});
-
-  testWidgets('Todoにタイトルと日付が表示されるか。', (widgetTester) async {
-    await widgetTester.pumpWidget(const ProviderScope(child: MyApp()));
-    expect(find.text('TodoList'), findsOneWidget);
-  });
-
   group('Todoの表示に関してのグループ。', () {
     late FakeFirebaseFirestore fakeFirestore;
     late Widget app;
@@ -53,24 +46,32 @@ void main() {
     });
 
     testWidgets('Todoにタイトルと日付が表示されるか。', (widgetTester) async {
+      // アプリの起動。
       await widgetTester.pumpWidget(app);
+      // 画面の描画中にCircularProgressIndicatorが一つ表示されているか。
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await widgetTester.idle();
-      await widgetTester.pump();
+      // 画面の描画完了待ち。
+      await widgetTester.pumpAndSettle();
+      // 画面の描画完了後、CircularProgressIndicatorが表示されていないか。
       expect(find.byType(CircularProgressIndicator), findsNothing);
+      // 画面のTodo一覧に「掃除」のタイトルのTodoが一つ表示されているか。
       expect(find.text('掃除'), findsOneWidget);
+      // 画面のTodo一覧に「2024/01/01 18:30」の日付のTodoが一つ表示されているか。
       expect(find.text('2024/01/01 18:30'), findsOneWidget);
     });
 
-    testWidgets('TodoをスワイプしTodoが削除されるか。', (widgetTester) async {
+    testWidgets('Todoを左にドラッグしTodoが削除されるか。', (widgetTester) async {
       await widgetTester.pumpWidget(app);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await widgetTester.idle();
-      await widgetTester.pump();
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      final key = find.byKey(const ValueKey('mock_id'));
-      await widgetTester.drag(key, const Offset(-500, 0));
       await widgetTester.pumpAndSettle();
+      expect(find.byType(CircularProgressIndicator), findsNothing);
+      //「mock_id」のValueKeyを持つTodoの特定する。
+      final key = find.byKey(const ValueKey('mock_id'));
+      //「mock_id」のValueKeyを持つTodoを左にドラッグする。
+      await widgetTester.drag(key, const Offset(-500, 0));
+      // 画面の描画完了待ち。
+      await widgetTester.pumpAndSettle();
+      //「mock_id」のValueKeyを持つTodoが表示されていないか。
       expect(key, findsNothing);
     });
   });
