@@ -22,42 +22,39 @@ void main() {
 
   group('Todoの表示に関してのグループ。', () {
     late FakeFirebaseFirestore fakeFirestore;
+    late Widget app;
 
     setUp(() async {
       fakeFirestore = FakeFirebaseFirestore();
+      app = ProviderScope(
+        overrides: [
+          firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
+          todoListStreamProvider.overrideWith((ref) {
+            return fakeFirestore
+                .collection('todos')
+                .withConverter<TodoDomain>(
+                  fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
+                  toFirestore: (value, _) => value.toJson()..remove('id'),
+                )
+                .orderBy('date', descending: true)
+                .snapshots();
+          }),
+        ],
+        child: const MyApp(),
+      );
       await fakeFirestore.collection('todos').doc('mock_id').set({
         'title': '掃除',
         'date': DateTime(2024, 1, 1, 18, 30),
       });
-      final res = await fakeFirestore.collection('todos').get();
+      // final res = await fakeFirestore.collection('todos').get();
       // print(res.docs.length);
       // print(res.docs.first.data());
       // print(res.docs.first.id);
     });
 
     testWidgets('Todoにタイトルと日付が表示されるか。', (widgetTester) async {
-      await widgetTester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
-            todoListStreamProvider.overrideWith((ref) {
-              return fakeFirestore
-                  .collection('todos')
-                  .withConverter<TodoDomain>(
-                    fromFirestore: (snapshot, _) =>
-                        TodoDomain.fromDoc(snapshot),
-                    toFirestore: (value, _) => value.toJson()..remove('id'),
-                  )
-                  .orderBy('date', descending: true)
-                  .snapshots();
-            }),
-          ],
-          child: const MyApp(),
-        ),
-      );
-
+      await widgetTester.pumpWidget(app);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
       await widgetTester.idle();
       await widgetTester.pump();
       expect(find.byType(CircularProgressIndicator), findsNothing);
@@ -66,26 +63,7 @@ void main() {
     });
 
     testWidgets('TodoをスワイプしTodoが削除されるか。', (widgetTester) async {
-      await widgetTester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
-            todoListStreamProvider.overrideWith((ref) {
-              return fakeFirestore
-                  .collection('todos')
-                  .withConverter<TodoDomain>(
-                    fromFirestore: (snapshot, _) =>
-                        TodoDomain.fromDoc(snapshot),
-                    toFirestore: (value, _) => value.toJson()..remove('id'),
-                  )
-                  .orderBy('date', descending: true)
-                  .snapshots();
-            }),
-          ],
-          child: const MyApp(),
-        ),
-      );
-
+      await widgetTester.pumpWidget(app);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       await widgetTester.idle();
       await widgetTester.pump();
