@@ -28,6 +28,7 @@ class TodoListPage extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final todo = docs[index].data();
                     log(todo.title);
+                    print(todo.id);
                     print(todo.date);
                     print(DateFormat('yyyy/MM/dd HH:mm').format(todo.date));
                     return Dismissible(
@@ -39,7 +40,7 @@ class TodoListPage extends ConsumerWidget {
                             .delete(context: context, id: todo.id);
                       },
                       child: ListTile(
-                        key: ValueKey(todo.id),
+                        // key: ValueKey(todo.id),
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

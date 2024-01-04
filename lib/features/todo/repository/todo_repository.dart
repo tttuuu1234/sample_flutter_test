@@ -31,6 +31,6 @@ class TodoRepository {
   }
 
   Future<void> delete(String id) async {
-    await FirebaseFirestore.instance.collection('todos').doc(id).delete();
+    await _firebaseFirestore.collection('todos').doc(id).delete();
   }
 }
