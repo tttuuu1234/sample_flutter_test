@@ -28,7 +28,10 @@ class _TodoSavePageState extends ConsumerState<TodoSavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todo save'),
+        title: const Text(
+          'Todo save',
+          key: ValueKey('TodoSavePageTitleKey'),
+        ),
         actions: [
           TextButton(
             onPressed: titleController.text.isEmpty
@@ -50,6 +53,7 @@ class _TodoSavePageState extends ConsumerState<TodoSavePage> {
         child: Column(
           children: [
             TextFormField(
+              key: const ValueKey('TodoTitleFormKey'),
               controller: titleController,
               onChanged: (_) {
                 // 画面更新するため。
