@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sample_flutter_test/features/todo/application/todo_application.dart';
 import 'package:sample_flutter_test/features/todo/domain/todo.dart';
 import 'package:sample_flutter_test/main.dart';
+import 'package:sample_flutter_test/presentation/pages/todo/todo_save_page.dart';
 import 'package:sample_flutter_test/utils/provider.dart';
 
 void main() {
@@ -50,5 +51,32 @@ void main() {
     await widgetTester.pumpAndSettle();
     // TextFormFiledに「掃除」と表示されているか。
     expect(titleTextFormFiled.controller!.text, '掃除');
+  });
+
+  testWidgets('titleの未入力時は保存ボタンが非活性、入力時は活性化しているか。', (widgetTester) async {
+    await widgetTester.pumpWidget(app);
+    final finderFloatingActionButton = find.byType(FloatingActionButton);
+    await widgetTester.tap(finderFloatingActionButton);
+    await widgetTester.pumpAndSettle();
+    final finder = find.byKey(const ValueKey('TodoTitleFormKey'));
+    final titleTextFormFiled = widgetTester.widget(finder) as TextFormField;
+    final finderDisabledSaveButton = find.byType(TextButton);
+    final disabledSaveButton =
+        widgetTester.widget(finderDisabledSaveButton) as TextButton;
+    // TextFormFiledに何も入力していない時は空文字になっているか。
+    expect(titleTextFormFiled.controller!.text, '');
+    // TextButtonが非活性になっているか。
+    expect(disabledSaveButton.enabled, isFalse);
+
+    // TextFormFiledに「掃除です」と入力する。
+    await widgetTester.enterText(finder, '掃除です');
+    titleTextFormFiled.onChanged!.call;
+    await widgetTester.pumpAndSettle();
+    // 画面更新後のTextButtonが活性化しているかどうか取得するには、再度widgetを取得しないといけないため。
+    final finderSaveButton = find.byType(TextButton);
+    final saveButton = widgetTester.widget(finderSaveButton) as TextButton;
+    expect(titleTextFormFiled.controller!.text, '掃除です');
+    // TextButtonが活性化しているか。
+    expect(saveButton.enabled, isTrue);
   });
 }
