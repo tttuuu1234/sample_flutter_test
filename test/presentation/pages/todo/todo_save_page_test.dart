@@ -19,16 +19,16 @@ void main() {
         // Mock用のFirestoreに上書きしている。
         firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
         // Mock用のTodo一覧取得StreamProviderに上書きしている。
-        // todoListStreamProvider.overrideWith((ref) {
-        //   return fakeFirestore
-        //       .collection('todos')
-        //       .withConverter<TodoDomain>(
-        //         fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
-        //         toFirestore: (value, _) => value.toJson()..remove('id'),
-        //       )
-        //       .orderBy('date', descending: true)
-        //       .snapshots();
-        // }),
+        todoListStreamProvider.overrideWith((ref) {
+          return fakeFirestore
+              .collection('todos')
+              .withConverter<TodoDomain>(
+                fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
+                toFirestore: (value, _) => value.toJson()..remove('id'),
+              )
+              .orderBy('date', descending: true)
+              .snapshots();
+        }),
       ],
       child: const MyApp(),
     );
@@ -78,5 +78,23 @@ void main() {
     expect(titleTextFormFiled.controller!.text, '掃除です');
     // TextButtonが活性化しているか。
     expect(saveButton.enabled, isTrue);
+  });
+
+  testWidgets('Todoの保存ができるか。', (widgetTester) async {
+    await widgetTester.pumpWidget(app);
+    expect(find.text('TodoList'), findsOneWidget);
+    await widgetTester.tap(find.byType(FloatingActionButton));
+    await widgetTester.pumpAndSettle();
+    await widgetTester.enterText(
+      find.byKey(const ValueKey('TodoTitleFormKey')),
+      '掃除です',
+    );
+    await widgetTester.pumpAndSettle();
+    await widgetTester.tap(find.byType(TextButton));
+    await widgetTester.idle();
+    await widgetTester.pump();
+    expect(find.text('TodoList'), findsOneWidget);
+    // expect(find.text('Todo is empty'), findsOneWidget);
+    expect(find.text('掃除です'), findsOneWidget);
   });
 }

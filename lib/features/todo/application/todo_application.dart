@@ -23,6 +23,8 @@ class TodoApplication {
     required BuildContext context,
     required String title,
   }) async {
+    print('追加の処理');
+    print(title);
     await _ref.read(todoRepositoryProvider).add(title: title);
     if (context.mounted) {
       showNormalSnackBar(context, 'Save success');

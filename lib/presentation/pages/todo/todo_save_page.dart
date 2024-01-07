@@ -37,10 +37,12 @@ class _TodoSavePageState extends ConsumerState<TodoSavePage> {
             onPressed: titleController.text.isEmpty
                 ? null
                 : () async {
+                    print('押されました');
                     await ref
                         .read(todoApplicationProvider)
                         .add(context: context, title: titleController.text);
                     if (context.mounted) {
+                      print('戻ります');
                       Navigator.pop(context);
                     }
                   },

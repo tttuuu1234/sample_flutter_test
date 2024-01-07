@@ -21,6 +21,7 @@ class TodoListPage extends ConsumerWidget {
         data: (data) {
           log('ListViewです');
           final docs = data.docs;
+          print(docs.length);
           return docs.isEmpty
               ? const Center(child: Text('Todo is empty'))
               : ListView.builder(

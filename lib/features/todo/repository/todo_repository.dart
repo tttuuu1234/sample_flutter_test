@@ -24,10 +24,12 @@ class TodoRepository {
   }
 
   Future<void> add({required String title}) async {
-    await _firebaseFirestore.collection('todos').add({
+    print(_firebaseFirestore.runtimeType);
+    final res = await _firebaseFirestore.collection('todos').add({
       'title': title,
       'date': DateTime.now(),
     });
+    print(res.id);
   }
 
   Future<void> delete(String id) async {
