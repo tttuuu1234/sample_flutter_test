@@ -83,6 +83,8 @@ void main() {
   testWidgets('Todoの保存ができるか。', (widgetTester) async {
     await widgetTester.pumpWidget(app);
     expect(find.text('TodoList'), findsOneWidget);
+    await widgetTester.pumpAndSettle();
+    expect(find.text('Todo is empty'), findsOneWidget);
     await widgetTester.tap(find.byType(FloatingActionButton));
     await widgetTester.pumpAndSettle();
     await widgetTester.enterText(
@@ -90,11 +92,21 @@ void main() {
       '掃除です',
     );
     await widgetTester.pumpAndSettle();
+    // TextButtonをタップしonPressedプロパティに設定されている処理を行わせる。
+    // この場合は、追加の処理。
     await widgetTester.tap(find.byType(TextButton));
-    await widgetTester.idle();
+    await widgetTester.pump();
+    // 追加に成功した場合、「Save success」がスナックバーに表示されているか。
+    // widgetツリー内部ではTextは2つ存在している、、
+    // TODO: SnackBarのwidgetを取得して、そこに表示されている文言が何のかをテストする方が方法としては正しいと思う。
+    expect(find.text('Save success'), findsNWidgets(2));
+    // 追加に成功した場合、Todo一覧画面に戻るので、戻った先の画面のタイトルに「TodoList」が
+    // 表示されているか。
     await widgetTester.pump();
     expect(find.text('TodoList'), findsOneWidget);
-    // expect(find.text('Todo is empty'), findsOneWidget);
+    // 追加したTodoのタイトル、「掃除です」が表示されているか。
+    // ListViewは再ビルドされていないが、テスト上は問題なく取得できて描画できている。
+    // Firestoreのモック化の影響なのかな？
     expect(find.text('掃除です'), findsOneWidget);
   });
 }

@@ -18,52 +18,55 @@ class TodoListPage extends ConsumerWidget {
         title: const Text('TodoList'),
       ),
       body: todoList.when(
-        data: (data) {
-          log('ListViewです');
-          final docs = data.docs;
-          print(docs.length);
-          return docs.isEmpty
-              ? const Center(child: Text('Todo is empty'))
-              : ListView.builder(
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    final todo = docs[index].data();
-                    log(todo.title);
-                    print(todo.id);
-                    print(todo.date);
-                    print(DateFormat('yyyy/MM/dd HH:mm').format(todo.date));
-                    return Dismissible(
-                      key: ValueKey(todo.id),
-                      background: Container(color: Colors.red),
-                      onDismissed: (direction) async {
-                        await ref
-                            .read(todoApplicationProvider)
-                            .delete(context: context, id: todo.id);
-                      },
-                      child: ListTile(
-                        // key: ValueKey(todo.id),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              DateFormat('yyyy/MM/dd HH:mm').format(todo.date),
-                            ),
-                            Text(todo.title),
-                          ],
+          data: (data) {
+            log('ListViewです');
+            final docs = data.docs;
+            print(docs.length);
+            return docs.isEmpty
+                ? const Center(child: Text('Todo is empty'))
+                : ListView.builder(
+                    itemCount: docs.length,
+                    itemBuilder: (context, index) {
+                      final todo = docs[index].data();
+                      log(todo.title);
+                      print(todo.id);
+                      print(todo.date);
+                      print(DateFormat('yyyy/MM/dd HH:mm').format(todo.date));
+                      return Dismissible(
+                        key: ValueKey(todo.id),
+                        background: Container(color: Colors.red),
+                        onDismissed: (direction) async {
+                          await ref
+                              .read(todoApplicationProvider)
+                              .delete(context: context, id: todo.id);
+                        },
+                        child: ListTile(
+                          // key: ValueKey(todo.id),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                DateFormat('yyyy/MM/dd HH:mm')
+                                    .format(todo.date),
+                              ),
+                              Text(todo.title),
+                            ],
+                          ),
+                          onTap: () {},
                         ),
-                        onTap: () {},
-                      ),
-                    );
-                  },
-                );
-        },
-        error: (error, stackTrace) => Center(
-          child: Text(error.toString()),
-        ),
-        loading: () => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
-      ),
+                      );
+                    },
+                  );
+          },
+          error: (error, stackTrace) => Center(
+                child: Text(error.toString()),
+              ),
+          loading: () {
+            print('ローディングです');
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
