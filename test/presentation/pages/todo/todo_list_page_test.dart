@@ -41,10 +41,6 @@ void main() {
       'title': '掃除',
       'date': DateTime(2024, 1, 1, 18, 30),
     });
-    // final res = await fakeFirestore.collection('todos').get();
-    // print(res.docs.length);
-    // print(res.docs.first.data());
-    // print(res.docs.first.id);
   });
 
   testWidgets('Todoにタイトルと日付が表示されるか。', (widgetTester) async {
