@@ -1,36 +1,17 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sample_flutter_test/features/todo/application/todo_application.dart';
-import 'package:sample_flutter_test/features/todo/domain/todo.dart';
-import 'package:sample_flutter_test/main.dart';
-import 'package:sample_flutter_test/utils/provider.dart';
+
+import 'utils.dart';
 
 void main() {
   late FakeFirebaseFirestore fakeFirestore;
   late Widget app;
+  final todoTestUtils = TodoTestUtils();
 
   setUp(() async {
-    fakeFirestore = FakeFirebaseFirestore();
-    app = ProviderScope(
-      overrides: [
-        // Mock用のFirestoreに上書きしている。
-        firestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
-        // Mock用のTodo一覧取得StreamProviderに上書きしている。
-        todoListStreamProvider.overrideWith((ref) {
-          return fakeFirestore
-              .collection('todos')
-              .withConverter<TodoDomain>(
-                fromFirestore: (snapshot, _) => TodoDomain.fromDoc(snapshot),
-                toFirestore: (value, _) => value.toJson()..remove('id'),
-              )
-              .orderBy('date', descending: true)
-              .snapshots();
-        }),
-      ],
-      child: const MyApp(),
-    );
+    fakeFirestore = todoTestUtils.getFakeFirestore();
+    app = todoTestUtils.getAppToTodoTest(fakeFirestore);
     // Firestoreに擬似的にTodoの追加をしている。
     await fakeFirestore.collection('todos').doc('mock_id').set({
       'title': '掃除',
